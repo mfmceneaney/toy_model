@@ -349,12 +349,8 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
         // Plot projection of fitted distribution in x.
         RooPlot *xframe = x.frame(RooFit::Title(Form("%s Projection, Bin: %s",x.GetTitle(),bincut.c_str())));
         bin_ds->plotOn(xframe);
-        // pdf_fit_fitvars.plotOn(xframe, RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
-        pdf_fit_fitvars.plotOn(xframe, ProjWData(h, *bin_ds));
-        pdf_fit_fitvars.plotOn(xframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed));
-
-        // // Overlay the background component of model with a dashed line
-        // pdf_fit_fitvars.plotOn(xframe, RooFit::LineStyle(kDashed), RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
+        pdf_fit_fitvars.plotOn(xframe, ProjWData(h, *bin_ds), DataError(RooAbsData::SumW2));
+        pdf_fit_fitvars.plotOn(xframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed), DataError(RooAbsData::SumW2));
 
         // Draw the frame on the canvas
         std::string c1_x_name = Form("c1_%s__fitvarx_%s__fitidx_%d",outdir.c_str(),x.GetName(),fit_idx);
@@ -367,12 +363,8 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
         // Plot projection of fitted distribution in y.
         RooPlot *yframe = y.frame(RooFit::Title(Form("%s Projection, Bin: %s",y.GetTitle(),bincut.c_str())));
         bin_ds->plotOn(yframe);
-        // pdf_fit_fitvars.plotOn(yframe, RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
-        pdf_fit_fitvars.plotOn(yframe, ProjWData(h, *bin_ds));
-        pdf_fit_fitvars.plotOn(yframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed));
-
-        // // Overlay the background component of model with a dashed line
-        // pdf_fit_fitvars.plotOn(yframe, RooFit::LineStyle(kDashed), RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
+        pdf_fit_fitvars.plotOn(yframe, ProjWData(h, *bin_ds), DataError(RooAbsData::SumW2));
+        pdf_fit_fitvars.plotOn(yframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed), DataError(RooAbsData::SumW2));
 
         // Draw the frame on the canvas
         std::string c1_y_name = Form("c1_%s__fitvary_%s__fitidx_%d",outdir.c_str(),y.GetName(),fit_idx);
