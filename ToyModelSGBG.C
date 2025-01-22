@@ -248,7 +248,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     legend->Draw();
 
     // Save Canvas
-    c_massfit->SaveAs(Form("%s_%s.pdf",c_massfit->GetName(),"cb"));
+    c_massfit->SaveAs(Form("%s__sigpdf_%s__fitidx_%d.pdf",c_massfit->GetName(),"cb",fit_idx));
 
     //----------------------------------------------------------------------------------------------------//
     // Compute sWeights
@@ -357,7 +357,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
         // pdf_fit_fitvars.plotOn(xframe, RooFit::LineStyle(kDashed), RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
 
         // Draw the frame on the canvas
-        std::string c1_x_name = Form("c1_%s__fitvarx_%s",outdir.c_str(),x.GetName());
+        std::string c1_x_name = Form("c1_%s__fitvarx_%s__fitidx_%d",outdir.c_str(),x.GetName(),fit_idx);
         TCanvas *c1_x = new TCanvas(c1_x_name.c_str(), c1_x_name.c_str());
         gPad->SetLeftMargin(0.15);
         xframe->GetYaxis()->SetTitleOffset(1.4);
@@ -375,7 +375,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
         // pdf_fit_fitvars.plotOn(yframe, RooFit::LineStyle(kDashed), RooFit::Normalization(1.0, RooAbsReal::RelativeExpected));
 
         // Draw the frame on the canvas
-        std::string c1_y_name = Form("c1_%s__fitvary_%s",outdir.c_str(),y.GetName());
+        std::string c1_y_name = Form("c1_%s__fitvary_%s__fitidx_%d",outdir.c_str(),y.GetName(),fit_idx);
         TCanvas *c1_y = new TCanvas(c1_y_name.c_str(), c1_y_name.c_str());
         gPad->SetLeftMargin(0.15);
         yframe->GetYaxis()->SetTitleOffset(1.4);
@@ -474,7 +474,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
         // Set outname and save
         TString fname;
-        fname.Form("%s_%s_%s_%s_%.3f_%.3f_A%d","MLFit",x.GetName(),y.GetName(),z.GetName(),bins[0],bins[nbins],idx);
+        fname.Form("%s_%s_%s_%s_%.3f_%.3f_A%d__fitidx%d","MLFit",x.GetName(),y.GetName(),z.GetName(),bins[0],bins[nbins],idx,fit_idx);
         c1->Print(fname+".pdf");
         gr->SaveAs(fname+".root","recreate");
 
@@ -528,7 +528,7 @@ void ToyModelSGBG() {
    std::vector<std::vector<std::vector<std::vector<double>>>> graphs_reps;
    int nreps = 1;
    for (int fit_idx=0; fit_idx<nreps; fit_idx++) {
-      int nevents = 10000;
+      int nevents = 10000; //NOTE: Lambda dataset is actually ~3.7M events.
       fit_idcs.push_back(fit_idx);
       std::vector<std::vector<std::vector<double>>> gs = getGraphs(fit_idx, nevents);
       graphs_reps.push_back(gs);
