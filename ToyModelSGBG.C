@@ -264,6 +264,42 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     RooDataSet data_sg_sw{dataset_sg_name.c_str(), data1.GetTitle(), &data1, *data1.get(), nullptr, "sgYield_sw"};
     RooDataSet data_bg_sw{dataset_bg_name.c_str(), data1.GetTitle(), &data1, *data1.get(), nullptr, "bgYield_sw"};
 
+    // Plot sWeighted signal distribution in x.
+    RooPlot *xframe = x.frame(RooFit::Title(Form("%s sWeighted distribution",x.GetTitle())));
+    data_bg_sw.plotOn(xframe, RooFit::DataError(RooAbsData::SumW2));
+
+    // Draw the frame on the canvas
+    std::string c1_sw_sg_x_name = Form("c_sg_sweight__fitvarx_%s",x.GetName());
+    TCanvas *c1_sw_sg_x = new TCanvas(c1_sw_sg_x_name.c_str(), c1_sw_sg_x_name.c_str());
+    gPad->SetLeftMargin(0.15);
+    xframe->GetYaxis()->SetTitleOffset(1.4);
+    xframe->Draw();
+    c1_sw_sg_x->Print(Form("%s.pdf",c1_sw_sg_x_name.c_str()));
+
+    // Plot sWeighted signal distribution in y.
+    RooPlot *yframe = y.frame(RooFit::Title(Form("%s sWeighted distribution",y.GetTitle())));
+    data_bg_sw.plotOn(yframe, RooFit::DataError(RooAbsData::SumW2));
+
+    // Draw the frame on the canvas
+    std::string c1_sw_sg_y_name = Form("c_sg_sweight__fitvary_%s",y.GetName());
+    TCanvas *c1_sw_sg_y = new TCanvas(c1_sw_sg_y_name.c_str(), c1_sw_sg_y_name.c_str());
+    gPad->SetLeftMargin(0.15);
+    yframe->GetYaxis()->SetTitleOffset(1.4);
+    yframe->Draw();
+    c1_sw_sg_y->Print(Form("%s.pdf",c1_sw_sg_y_name.c_str()));
+
+    // Plot sWeighted signal distribution in the bin variable.
+    RooPlot *bframe = z.frame(RooFit::Title(Form("%s sWeighted distribution",z.GetTitle())));
+    data_bg_sw.plotOn(bframe, RooFit::DataError(RooAbsData::SumW2));
+
+    // Draw the frame on the canvas
+    std::string c1_sw_sg_b_name = Form("c_sg_sweight__binvar_%s",z.GetName());
+    TCanvas *c1_sw_sg_b = new TCanvas(c1_sw_sg_b_name.c_str(), c1_sw_sg_b_name.c_str());
+    gPad->SetLeftMargin(0.15);
+    bframe->GetYaxis()->SetTitleOffset(1.4);
+    bframe->Draw();
+    c1_sw_sg_b->Print(Form("%s.pdf",c1_sw_sg_b_name.c_str()));
+
     //----------------------------------------------------------------------------------------------------//
     // Fit asymmetry
     std::cout<<"[INFO]: Fit asymmmetries"<<std::endl;
