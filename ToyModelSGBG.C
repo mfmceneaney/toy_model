@@ -289,7 +289,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
         // Apply bin cuts
         std::string bincut = Form("z>=%.2f && z<%.2f",bin_min,bin_max);
-        RooDataSet *bin_ds = (RooDataSet*)data_sg_sw->reduce(bincut.c_str()); //NOTE: IMPORTANT USE THE sWEIGHTED DATASET!
+        RooDataSet *bin_ds = (RooDataSet*)data_sg_sw.reduce(bincut.c_str()); //NOTE: IMPORTANT USE THE sWEIGHTED DATASET!
 
         // Get bin count
         int count = bin_ds->sumEntries();
