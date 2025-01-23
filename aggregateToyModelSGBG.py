@@ -195,7 +195,7 @@ def plot_graph(
                         linewidth=linewidth, markersize=markersize,label=ytitles[asym_num])
     plt.tick_params(direction='out',bottom=True,top=True,left=True,right=True,length=10,width=1)
     ax1.axhline(0, color='black',linestyle='-',linewidth=axlinewidth)
-    if sgasyms[asym_num]!=0.0: ax1.axhline(sgasym, color='red',linestyle='-',linewidth=axlinewidth,label='Injected '+ytitles[asym_num])
+    if sgasyms[asym_num]!=0.0: ax1.axhline(sgasyms[asym_num], color='red',linestyle='-',linewidth=axlinewidth,label='Injected '+ytitles[asym_num])
     plt.legend(loc='best')
     outpath = path+'__A'+str(asym_num)+'.pdf'
     print("DEBUGGING: plt.savefig(outpath) -> ",outpath)
