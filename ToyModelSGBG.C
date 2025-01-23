@@ -130,7 +130,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
     // Build independent variable pdf
     RooRealVar mean_gauss("mean_gauss", "mean_gauss", 0.5, 0.0, 1.0);
-    RooRealVar sigma_gauss("sigma_gauss", "sigma_gauss", 0.1, 0.0, 0.25);
+    RooRealVar sigma_gauss("sigma_gauss", "sigma_gauss", 0.5, 0.0, 2.0);
     RooGaussian pdf_gen_indepvars("pdf_gen_indepvars", "pdf_gen_indepvars", m, mean_gauss, sigma_gauss);
 
     // Generate signal datasets and merege
