@@ -269,7 +269,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     data_bg_sw.plotOn(xframe, RooFit::DataError(RooAbsData::SumW2));
 
     // Draw the frame on the canvas
-    std::string c1_sw_sg_x_name = Form("c_sg_sweight__fitvarx_%s",x.GetName());
+    std::string c1_sw_sg_x_name = Form("c_sg_sweight__fitvarx_%s__fitidx%d",x.GetName(),fit_idx);
     TCanvas *c1_sw_sg_x = new TCanvas(c1_sw_sg_x_name.c_str(), c1_sw_sg_x_name.c_str());
     gPad->SetLeftMargin(0.15);
     xframe->GetYaxis()->SetTitleOffset(1.4);
@@ -281,7 +281,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     data_bg_sw.plotOn(yframe, RooFit::DataError(RooAbsData::SumW2));
 
     // Draw the frame on the canvas
-    std::string c1_sw_sg_y_name = Form("c_sg_sweight__fitvary_%s",y.GetName());
+    std::string c1_sw_sg_y_name = Form("c_sg_sweight__fitvary_%s__fitidx%d",y.GetName(),fit_idx);
     TCanvas *c1_sw_sg_y = new TCanvas(c1_sw_sg_y_name.c_str(), c1_sw_sg_y_name.c_str());
     gPad->SetLeftMargin(0.15);
     yframe->GetYaxis()->SetTitleOffset(1.4);
@@ -293,7 +293,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     data_bg_sw.plotOn(bframe, RooFit::DataError(RooAbsData::SumW2));
 
     // Draw the frame on the canvas
-    std::string c1_sw_sg_b_name = Form("c_sg_sweight__binvar_%s",z.GetName());
+    std::string c1_sw_sg_b_name = Form("c_sg_sweight__binvar_%s__fitidx%d",z.GetName(),fit_idx);
     TCanvas *c1_sw_sg_b = new TCanvas(c1_sw_sg_b_name.c_str(), c1_sw_sg_b_name.c_str());
     gPad->SetLeftMargin(0.15);
     bframe->GetYaxis()->SetTitleOffset(1.4);
