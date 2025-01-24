@@ -140,7 +140,7 @@ def plot_graph(
     title = 'Injection Results',
     xvar  = 'z',
     xtitle = '$z_{p\pi^{-}}$',
-    ytitles = {0:'$\mathcal{A}_{LUT}^{\cos{\phi_{\Lambda}}}$',1:'$\mathcal{A}_{LUT}^{\Lambda}$',2:'$\mathcal{A}_{LUT}^{\cos{2\phi_{\Lambda}}}$'},
+    ytitles = {0:'$\mathcal{A}_{LUT}^{\cos{\phi_{\Lambda}-\phi_{S_{\Lambda}}}}$',1:'$\mathcal{A}_{LUT}^{\cos{\phi_{S_{\Lambda}}}}$',2:'$\mathcal{A}_{LUT}^{\cos{2\phi_{\Lambda}-\phi_{S_{\Lambda}}}}$'},
     sgasyms = [0.00, 0.10, 0.00],
     bgasym = 0.00,
     color  = 'blue', #NOTE: COLOR OF DATA POINTS
@@ -195,7 +195,7 @@ def plot_graph(
                         linewidth=linewidth, markersize=markersize,label=ytitles[asym_num])
     plt.tick_params(direction='out',bottom=True,top=True,left=True,right=True,length=10,width=1)
     ax1.axhline(0, color='black',linestyle='-',linewidth=axlinewidth)
-    if sgasyms[asym_num]!=0.0: ax1.axhline(sgasyms[asym_num], color='red',linestyle='-',linewidth=axlinewidth,label='Injected '+ytitles[asym_num])
+    if len(sgasyms)>asym_num: ax1.axhline(sgasyms[asym_num], color='red',linestyle='-',linewidth=axlinewidth,label='Injected '+ytitles[asym_num])
     plt.legend(loc='best')
     outpath = path+'__A'+str(asym_num)+'.pdf'
     print("DEBUGGING: plt.savefig(outpath) -> ",outpath)
@@ -224,6 +224,6 @@ def plot_graph(
 if __name__=="__main__":
 
     nasyms = 3
-    nreps = 72
+    nreps = 50
     main(nasyms,nreps)
     print("DONE")
