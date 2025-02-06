@@ -136,7 +136,7 @@ def plot_graph(
     y_std  = [],
     x_std  = [],
     xlims = [0.0,1.0],
-    ylims = [-0.05,0.2],
+    ylims = [-0.1,0.2],
     title = 'Injection Results',
     xvar  = 'z',
     xtitle = '$z_{p\pi^{-}}$',
