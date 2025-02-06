@@ -107,6 +107,7 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
     // Build fit asymmetry pdf formulae
     std::string pdf_fit_fitvars_asymmetry_formula = "0.747*1.0*x[0]*(x[2]*(x[5]*(1-0.5*x[5])/(1-x[5]+0.5*x[5]*x[5]))*cos(x[1])+x[3]*(x[5]*sqrt(1-x[5])/(1-x[5]+0.5*x[5]*x[5]))+x[4]*(x[5]*sqrt(1-x[5])/(1-x[5]+0.5*x[5]*x[5]))*cos(2.0*x[1]))";
+    // std::string pdf_fit_fitvars_asymmetry_formula = "0.747*1.0*x[0]*x[1]*(x[2]*sqrt(1-x[2])/(1-x[2]+0.5*x[2]*x[2]))";
     std::string pdf_fit_fitvars_pos_formula = Form("1.0+%s",pdf_fit_fitvars_asymmetry_formula.c_str());
     std::string pdf_fit_fitvars_neg_formula = Form("1.0-%s",pdf_fit_fitvars_asymmetry_formula.c_str());
 
@@ -128,12 +129,15 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     RooGenericPdf pdf_fit_fitvars_fit_neg("pdf_fit_fitvars_fit_neg", pdf_fit_fitvars_neg_formula.c_str(), *pdf_fit_fitvars_fit_args);
     RooSimultaneous pdf_fit_fitvars("pdf_fit_fitvars", "pdf_fit_fitvars", {{"plus", &pdf_fit_fitvars_fit_pos}, {"minus", &pdf_fit_fitvars_fit_neg}}, h);
 
+    // Build simple asymmetry function
+    RooFormulaVar model_asym("model_asym", pdf_fit_fitvars_asymmetry_formula.c_str(), *pdf_fit_fitvars_fit_args);
+
     // Build independent variable pdf
     RooRealVar mean_gauss("mean_gauss", "mean_gauss", 0.5, 0.0, 1.0);
     RooRealVar sigma_gauss("sigma_gauss", "sigma_gauss", 0.5, 0.0, 2.0);
     RooGaussian pdf_gen_indepvars("pdf_gen_indepvars", "pdf_gen_indepvars", m, mean_gauss, sigma_gauss);
 
-    // Generate signal datasets and merege
+    // Generate signal datasets and merge
     std::unique_ptr<RooDataSet> data{pdf_gen_fitvars_sg.generate(RooArgSet(h,x,y,y_kin), sgYield_init)};
     std::unique_ptr<RooDataSet> data_massvar_sg{pdf_gen_massvars_sg.generate(RooArgSet(m), sgYield_init)};
     static_cast<RooDataSet&>(*data).merge(&static_cast<RooDataSet&>(*data_massvar_sg));
@@ -149,6 +153,8 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
     // Generate independent variable dataset and merge
     std::unique_ptr<RooDataSet> data_indep_var{pdf_gen_indepvars.generate(RooArgSet(z), nevents)};
     static_cast<RooDataSet&>(*data).merge(&static_cast<RooDataSet&>(*data_indep_var));
+
+    data->Print("V");
 
     //TODO: Add option to just generate signal dataset and pass to below and not apply mass fit or sPlot
 
@@ -384,9 +390,8 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
         // Plot projection of fitted distribution in x.
         RooPlot *xframe = x.frame(RooFit::Title(Form("%s Projection, Bin: %s",x.GetTitle(),bincut.c_str())));
-        bin_ds->plotOn(xframe);
-        pdf_fit_fitvars.plotOn(xframe, ProjWData(h, *bin_ds), DataError(RooAbsData::SumW2));
-        pdf_fit_fitvars.plotOn(xframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed), DataError(RooAbsData::SumW2));
+        bin_ds->plotOn(xframe, RooFit::Asymmetry(h));
+        model_asym.plotOn(xframe, LineColor(kRed));
 
         // Draw the frame on the canvas
         std::string c1_x_name = Form("c1_%s__fitvarx_%s__fitidx_%d",outdir.c_str(),x.GetName(),fit_idx);
@@ -398,9 +403,8 @@ std::vector<std::vector<std::vector<double>>> getGraphs(int fit_idx, int nevents
 
         // Plot projection of fitted distribution in y.
         RooPlot *yframe = y.frame(RooFit::Title(Form("%s Projection, Bin: %s",y.GetTitle(),bincut.c_str())));
-        bin_ds->plotOn(yframe);
-        pdf_fit_fitvars.plotOn(yframe, ProjWData(h, *bin_ds), DataError(RooAbsData::SumW2));
-        pdf_fit_fitvars.plotOn(yframe, Components("plus,minus"), ProjWData(h, *bin_ds), LineStyle(kDashed), DataError(RooAbsData::SumW2));
+        bin_ds->plotOn(yframe, RooFit::Asymmetry(h));
+        model_asym.plotOn(yframe, LineColor(kRed));
 
         // Draw the frame on the canvas
         std::string c1_y_name = Form("c1_%s__fitvary_%s__fitidx_%d",outdir.c_str(),y.GetName(),fit_idx);
